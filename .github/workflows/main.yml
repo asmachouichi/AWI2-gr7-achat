@@ -1,73 +1,39 @@
 name: Build and Test AWI2-gr7-achat
 
-# -------------------------------
-# Déclencheur du workflow
-# -------------------------------
 on:
   push:
     branches:
-      -chouichiasma_awi2_g7  # Le workflow se déclenche à chaque push sur cette branche
+      - chouichiasma_awi2_g7
   pull_request:
     branches:
-      - chouichiasma_awi2_g7  # Le workflow se déclenche lors d'une PR sur cette branche
+      - chouichiasma_awi2_g7
 
-# -------------------------------
-# Jobs à exécuter
-# -------------------------------
 jobs:
   build:
-    runs-on: ubuntu-latest   # Le job s'exécute sur un runner Ubuntu
+    runs-on: ubuntu-latest
 
     steps:
-      # ---------------------------
-      # 1. Récupérer le code du repo
-      # ---------------------------
       - name: Checkout repository
         uses: actions/checkout@v3
-        # Cela clone ton repo GitHub dans le runner
 
-      # ---------------------------
-      # 2. Installer Java
-      # ---------------------------
       - name: Set up Java 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'   # Distribution d'OpenJDK
-          java-version: '17'        # Version de Java utilisée
+          java-version: '17'
+          distribution: 'temurin'
 
-      # ---------------------------
-      # 3. Installer Maven (si besoin)
-      # ---------------------------
       - name: Set up Maven
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          cache: maven  # Met en cache les dépendances Maven pour accélérer le workflow
+          distribution: 'temurin'
+          cache: maven
 
-      # ---------------------------
-      # 4. Build du projet
-      # ---------------------------
       - name: Build with Maven
         run: mvn clean install
-        # mvn clean install : compile le projet et installe les dépendances
 
-      # ---------------------------
-      # 5. Exécuter les tests unitaires
-      # ---------------------------
       - name: Run tests
         run: mvn test
-        # Lance tous les tests unitaires définis dans le projet
 
-      # ---------------------------
-      # 6. Optionnel : Vérification du code
-      # ---------------------------
       - name: Verify Java version
         run: java -version
-        # Vérifie que le runner utilise bien la bonne version de Java
-
-      # ---------------------------
-      # 7. Optionnel : Déploiement ou packaging
-      # ---------------------------
-      #- name: Package project
-      #  run: mvn package
-      #  # Génère un fichier .jar ou .war prêt à déployer
