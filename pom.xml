@@ -2,11 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- ========================== -->
-    <!-- 🏷️ Informations générales -->
-    <!-- ========================== -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
     <artifactId>achat</artifactId>
@@ -16,9 +13,7 @@
     <name>achat</name>
     <description>Projet Spring Boot - Gestion des achats</description>
 
-    <!-- ========================== -->
-    <!-- 🔧 Configuration parent -->
-    <!-- ========================== -->
+    <!-- Parent Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -26,72 +21,59 @@
         <relativePath/>
     </parent>
 
-    <!-- ========================== -->
-    <!-- ⚙️  Propriétés globales -->
-    <!-- ========================== -->
+    <!-- Propriétés -->
     <properties>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
-    <!-- ========================== -->
-    <!-- 📦 Dépendances Maven -->
-    <!-- ========================== -->
-   <dependencies>
-    <!-- JPA / Hibernate -->
-    <dependency>
-        <groupId>jakarta.persistence</groupId>
-        <artifactId>jakarta.persistence-api</artifactId>
-        <version>3.1.0</version>
-    </dependency>
-    <dependency>
-        <groupId>org.hibernate.orm</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>6.3.0.Final</version>
-    </dependency>
+    <!-- Dépendances -->
+    <dependencies>
+        <!-- Spring Boot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 
-    <!-- Spring Data JPA -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    
-    <!-- Swagger -->
-    <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-boot-starter</artifactId>
-        <version>3.0.0</version>
-    </dependency>
+        <!-- Spring Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
-    <!-- Optional: transaction -->
-    <dependency>
-        <groupId>jakarta.transaction</groupId>
-        <artifactId>jakarta.transaction-api</artifactId>
-        <version>2.0.1</version>
-    </dependency>
+        <!-- Hibernate (JPA) -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.3.0.Final</version>
+        </dependency>
 
-    <!-- Autres dépendances Spring Boot -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-</dependencies>
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
+        <!-- Transactions -->
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+    </dependencies>
 
-    <!-- ========================== -->
-    <!-- ⚙️ Plugins Maven -->
-    <!-- ========================== -->
+    <!-- Build et Plugins -->
     <build>
         <plugins>
-
-            <!-- Plugin Spring Boot -->
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Compiler Plugin -->
+            <!-- Maven Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -102,40 +84,27 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin Deploy (pour Nexus) -->
+            <!-- Maven Deploy -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.1.1</version>
-                <configuration>
-                    <altDeploymentRepository>
-                        deploymentRepo::default::http://localhost:8082/repository/maven-releases/
-                    </altDeploymentRepository>
-                </configuration>
             </plugin>
-
         </plugins>
     </build>
 
-    <!-- ========================== -->
-    <!-- 📤 Déploiement Nexus -->
-    <!-- ========================== -->
+    <!-- Distribution Management (Nexus) -->
     <distributionManagement>
-
-        <!-- Dépôt SNAPSHOT -->
         <snapshotRepository>
             <id>deploymentRepo</id>
             <name>Nexus Snapshot Repository</name>
             <url>http://localhost:8082/repository/maven-snapshots/</url>
         </snapshotRepository>
-
-        <!-- Dépôt RELEASE -->
         <repository>
             <id>deploymentRepo</id>
             <name>Nexus Release Repository</name>
             <url>http://localhost:8082/repository/maven-releases/</url>
         </repository>
-
     </distributionManagement>
 
 </project>
