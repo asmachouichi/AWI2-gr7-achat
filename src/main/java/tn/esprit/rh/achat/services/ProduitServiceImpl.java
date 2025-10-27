@@ -16,55 +16,74 @@ import java.util.List;
 @Slf4j
 public class ProduitServiceImpl implements IProduitService {
 
-	@Autowired
-	ProduitRepository produitRepository;
-	@Autowired
-	StockRepository stockRepository;
-	@Autowired
-	CategorieProduitRepository categorieProduitRepository;
+    @Autowired
+    ProduitRepository produitRepository;
 
-	@Override
-	public List<Produit> retrieveAllProduits() {
-		List<Produit> produits = (List<Produit>) produitRepository.findAll();
-		for (Produit produit : produits) {
-			log.info(" Produit : " + produit);
-		}
-		return produits;
-	}
+    @Autowired
+    StockRepository stockRepository;
 
-	@Transactional
-	public Produit addProduit(Produit p) {
-		produitRepository.save(p);
-		return p;
-	}
+    @Autowired
+    CategorieProduitRepository categorieProduitRepository;
 
-	
+    @Override
+    public List<Produit> retrieveAllProduits() {
+        log.info("🟦 [DEBUT] Récupération de tous les produits");
+        List<Produit> produits = (List<Produit>) produitRepository.findAll();
+        for (Produit produit : produits) {
+            log.info("➡️ Produit récupéré : {}", produit.getLibelleProduit());
+        }
+        log.info("🟩 [FIN] Récupération terminée : {} produits trouvés", produits.size());
+        return produits;
+    }
 
-	@Override
-	public void deleteProduit(Long produitId) {
-		produitRepository.deleteById(produitId);
-	}
+    @Transactional
+    @Override
+    public Produit addProduit(Produit p) {
+        log.info("🟧 [DEBUT] Ajout d’un nouveau produit : {}", p.getLibelleProduit());
+        produitRepository.save(p);
+        log.info("🟩 [SUCCÈS] Produit ajouté avec ID : {}", p.getIdProduit());
+        return p;
+    }
 
-	@Override
-	public Produit updateProduit(Produit p) {
-		return produitRepository.save(p);
-	}
+    @Override
+    public void deleteProduit(Long produitId) {
+        log.info("🟥 [SUPPRESSION] Tentative de suppression du produit avec ID : {}", produitId);
+        produitRepository.deleteById(produitId);
+        log.info("🟩 [SUCCÈS] Produit supprimé avec ID : {}", produitId);
+    }
 
-	@Override
-	public Produit retrieveProduit(Long produitId) {
-		Produit produit = produitRepository.findById(produitId).orElse(null);
-		log.info("produit :" + produit);
-		return produit;
-	}
+    @Override
+    public Produit updateProduit(Produit p) {
+        log.info("🟨 [MISE À JOUR] Mise à jour du produit ID : {}", p.getIdProduit());
+        Produit updatedProduit = produitRepository.save(p);
+        log.info("🟩 [SUCCÈS] Produit mis à jour : {}", updatedProduit.getLibelleProduit());
+        return updatedProduit;
+    }
 
-	@Override
-	public void assignProduitToStock(Long idProduit, Long idStock) {
-		Produit produit = produitRepository.findById(idProduit).orElse(null);
-		Stock stock = stockRepository.findById(idStock).orElse(null);
-		produit.setStock(stock);
-		produitRepository.save(produit);
+    @Override
+    public Produit retrieveProduit(Long produitId) {
+        log.info("🟦 [RECHERCHE] Récupération du produit avec ID : {}", produitId);
+        Produit produit = produitRepository.findById(produitId).orElse(null);
+        if (produit != null)
+            log.info("🟩 [SUCCÈS] Produit trouvé : {}", produit.getLibelleProduit());
+        else
+            log.warn("⚠️ [ERREUR] Aucun produit trouvé pour l’ID : {}", produitId);
+        return produit;
+    }
 
-	}
+    @Override
+    public void assignProduitToStock(Long idProduit, Long idStock) {
+        log.info("🟦 [AFFECTATION] Produit ID {} → Stock ID {}", idProduit, idStock);
+        Produit produit = produitRepository.findById(idProduit).orElse(null);
+        Stock stock = stockRepository.findById(idStock).orElse(null);
 
+        if (produit == null || stock == null) {
+            log.warn("⚠️ Impossible d’affecter le produit au stock (produit ou stock introuvable)");
+            return;
+        }
 
+        produit.setStock(stock);
+        produitRepository.save(produit);
+        log.info("🟩 [SUCCÈS] Produit {} affecté au stock {}", produit.getLibelleProduit(), stock.getLibelleStock());
+    }
 }
