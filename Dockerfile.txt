@@ -1,0 +1,8 @@
+# Étape 1 : Choisir une image de base avec Java
+FROM openjdk:17-jdk-slim
+
+# Étape 2 : Copier le fichier .jar généré par Maven dans l'image
+COPY target/*.jar app.jar
+
+# Étape 3 : Indiquer la commande à exécuter pour lancer ton application
+ENTRYPOINT ["java","-jar","/app.jar"]
