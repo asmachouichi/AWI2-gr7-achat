@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: achat
+  labels:
+    app:achat
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: achat
+  template:
+    metadata:
+      labels:
+        app: achat
+    spec:
+      containers:
+      - name: achat
+        image: asmachouichi/docker-spring-boot  # Assurez-vous que le nom est correct
+        ports:
+        - containerPort: 8083  # Utilisez le port sur lequel votre application écoute
+
