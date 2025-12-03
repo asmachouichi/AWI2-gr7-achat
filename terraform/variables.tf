@@ -8,7 +8,7 @@ variable "cluster_name" {
   description = "Nom du cluster EKS"
   type        = string
 
-  default     = "my_kubernetes"
+  default     = "MY_kubernetes"
 
  
 
