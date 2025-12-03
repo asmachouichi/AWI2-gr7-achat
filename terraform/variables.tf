@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "cluster_name" {
   description = "Nom du cluster EKS"
   type        = string
-  default     = "my_new_kubernetes"
+  default     = "my_seconde_kubernetes"
 }
 
 variable "subnet_ids" {
