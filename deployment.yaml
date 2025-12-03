@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: achat
   labels:
-    app:achat
+    app: achat       # <- espace ajouté
 spec:
   replicas: 2
   selector:
@@ -15,8 +15,7 @@ spec:
         app: achat
     spec:
       containers:
-      - name: achat
-        image: asmachouichi/docker-spring-boot  # Assurez-vous que le nom est correct
-        ports:
-        - containerPort: 8083  # Utilisez le port sur lequel votre application écoute
-
+        - name: achat
+          image: asmachouichi/docker-spring-boot  # Assurez-vous que le nom est correct
+          ports:
+            - containerPort: 8083  # Utilisez le port sur lequel votre application écoute
